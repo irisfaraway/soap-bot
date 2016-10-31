@@ -1,6 +1,6 @@
 # soap-bot
 
-The bot is currently up and running at [@eldritchenders](https://twitter.com/eldritchenders).
+You can see the bot in action at [@eldritchenders](https://twitter.com/eldritchenders). The bot is deployed to Heroku.
 
 scraper.rb collects plot summaries for individual Eastenders episodes from the BBC website.
 
