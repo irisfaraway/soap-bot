@@ -4,6 +4,6 @@ You can see the bot in action at [@eldritchenders](https://twitter.com/eldritche
 
 scraper.rb collects plot summaries for individual Eastenders episodes from the BBC website.
 
-bots.rb uses these summaries to compose tweets, but replaces some of the character names with Lovecraft stuff for added ELDRITCH HORROR.
+bots.rb uses these summaries and the [Twitter Ebooks gem](https://github.com/mispy/twitter_ebooks) to compose tweets, but replaces some of the character names with Lovecraft stuff for added ELDRITCH HORROR.
 
 I made some tweaks to the scraper output to avoid some weirdness with full character names ("Cthulhu Beale").
