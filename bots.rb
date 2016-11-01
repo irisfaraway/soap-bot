@@ -45,12 +45,17 @@ class MyBot < Ebooks::Bot
       if name_count > 0
         has_eldritch = false
         while has_eldritch == false
-          words.each do |word_bits|
+          words.each_with_index do |word_bits, index|
             # Replace a name with eldritch 50% of the time
             next unless characters.include?(word_bits[0]) && rand > 0.5
             word_bits[0] = eldritch.sample
             # We got eldritch now! No need to re-run this loop
             has_eldritch = true
+            # If this is the first word, capitalise it appropriately
+            next unless index.zero?
+            first_word = word_bits[0][0].to_s.split
+            first_word[0].capitalize!
+            word_bits[0][0] = first_word.join(' ').to_s
           end
         end
       end
