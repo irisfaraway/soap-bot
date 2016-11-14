@@ -23,7 +23,7 @@ class MyBot < Ebooks::Bot
     # Get the eldritch words
     eldritch = File.foreach('eldritch.txt').map { |line| line.split("\n") }
 
-    scheduler.every '57m' do
+    scheduler.every '171m' do
       # Generate a statement using the model
       # I kept the character count down to leave room for long Lovecraft names
       statement = model.make_statement(100)
