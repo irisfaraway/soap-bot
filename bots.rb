@@ -23,52 +23,53 @@ class MyBot < Ebooks::Bot
     # Get the eldritch words
     eldritch = File.foreach('eldritch.txt').map { |line| line.split("\n") }
 
-    scheduler.every '171m' do
-      # Generate a statement using the model
-      # I kept the character count down to leave room for long Lovecraft names
-      statement = model.make_statement(100)
+    # Generate a statement using the model
+    # I kept the character count down to leave room for long Lovecraft names
+    statement = model.make_statement(100)
 
-      # Prepare to collect words and count names which are in the statement
-      words = []
-      name_count = 0
+    # Prepare to collect words and count names which are in the statement
+    words = []
+    name_count = 0
 
-      # Get each individual word, break it up and check for names
-      statement.split(' ').each do |word|
-        # Separate out punctuation and anything after it, like 's
-        word_bits = word.split(/(?<=\w)(?=[.,?':;])/)
-        # If it's a name, add it to the array
-        name_count += 1 if characters.include?(word_bits[0])
-        words << word_bits
-      end
+    # Get each individual word, break it up and check for names
+    statement.split(' ').each do |word|
+      # Separate out punctuation and anything after it, like 's
+      word_bits = word.split(/(?<=\w)(?=[.,?':;])/)
+      # If it's a name, add it to the array
+      name_count += 1 if characters.include?(word_bits[0])
+      words << word_bits
+    end
 
-      # If there are names, at least one must be eldritchified
-      if name_count > 0
-        has_eldritch = false
-        while has_eldritch == false
-          words.each_with_index do |word_bits, index|
-            # Replace a name with eldritch 50% of the time
-            next unless characters.include?(word_bits[0]) && rand > 0.5
-            word_bits[0] = eldritch.sample
-            # We got eldritch now! No need to re-run this loop
-            has_eldritch = true
-            # If this is the first word, capitalise it appropriately
-            next unless index.zero?
-            first_word = word_bits[0][0].to_s.split
-            first_word[0].capitalize!
-            word_bits[0][0] = first_word.join(' ').to_s
-          end
+    # If there are names, at least one must be eldritchified
+    if name_count > 0
+      has_eldritch = false
+      while has_eldritch == false
+        words.each_with_index do |word_bits, index|
+          # Replace a name with eldritch 50% of the time
+          next unless characters.include?(word_bits[0]) && rand > 0.5
+          word_bits[0] = eldritch.sample
+          # We got eldritch now! No need to re-run this loop
+          has_eldritch = true
+          # If this is the first word, capitalise it appropriately
+          next unless index.zero?
+          first_word = word_bits[0][0].to_s.split
+          first_word[0].capitalize!
+          word_bits[0][0] = first_word.join(' ').to_s
         end
       end
-
-      # Join up the punctuation, then the words
-      new_words = []
-      words.each do |word_bits|
-        new_words << word_bits.join
-      end
-      new_statement = new_words.join(' ')
-
-      tweet(new_statement)
     end
+
+    # Join up the punctuation, then the words
+    new_words = []
+    words.each do |word_bits|
+      new_words << word_bits.join
+    end
+    new_statement = new_words.join(' ')
+
+    tweet(new_statement)
+
+    # Save the dynos
+    exit
   end
 
   private
